@@ -13,7 +13,6 @@
 
 /*
 * #TODO:
-* - fix the amount of time that the moveArm function runs for
 * - fix the speed/time for clawState
 * - finish the goddamn program (programn)
 */
@@ -72,20 +71,20 @@ void turnRight(int angle) {
 }
 
 void moveArm(int angle) { // angle is in degrees, clockwise if you look at the robot from its left side
-  motor[armMotor] = 16;
-  wait1Msec(angle * 50) // CHANGE THIS 50 LATER TO REFLECT THE ACTUAL TIME NEEDED TO ROTATE THE ARM
+	motor[armMotor] = -32;
+	wait1Msec((int) (angle * (float) (2500 / 45)));
 }
 
 void turnClaw(int angle) { // angle is in degrees, clockwise from the robot's perspective
   motor[wristMotor] = 16;
-  wait1Msec(angle * 50) // CHANGE THIS 50 LATER TO REFLECT THE ACTUAL TIME NEEDED TO ROTATE THE ARM
+  wait1Msec(angle * 50); // CHANGE THIS 50 LATER TO REFLECT THE ACTUAL TIME NEEDED TO ROTATE THE ARM
 }
 
-void setClawState(char state[]) { // opens/closes the claw
+void setClawState(char state) { // opens/closes the claw
   int speed = 0;
-  if(state[0] == 'o') {
+  if(state == 'o') {
     speed = 16;
-  } else if(state[0] == 'c') {
+  } else if(state == 'c') {
     speed = -16;
   }
   motor[clawMotor] = speed;
@@ -99,6 +98,7 @@ task main() {
 	wait1Msec(2000); // wait 2 seconds before the program starts
 
   for(int i = 0; i < 4; i += 1) {
+  	int counter = 0;
     while(counter != i) { // loop until the line sensor discovers a line
       int currentLineBoi = SensorValue[lineBoi]; // just for debugging
 
@@ -115,17 +115,17 @@ task main() {
       backward(32);
     }
     */
-    
+
     turnRight(90); // if the robot gets to the line, turn right to face the pipes
 
     moveArm(45);
-    setClawState("open"); // get ready to grab claw
+    setClawState('o'); // get ready to grab claw
 
     while(SensorValue[sonarFront] < 6) { // move until drive train is close enough that claw can grab pipe
       forward(32);
     }
 
-    setClawState("closed");
+    setClawState('c');
 
     while(SensorValue[sonarBack] > 1) {
       backward(32);
@@ -138,7 +138,7 @@ task main() {
     }
 
     turnClaw(-90);
-    setClawState("open");
+    setClawState('o');
     moveArm(-45); // drop pipe
 
     turnClaw(90);
