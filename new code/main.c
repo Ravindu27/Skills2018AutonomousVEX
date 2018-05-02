@@ -64,7 +64,8 @@ task main() {
     //  B: Rotate 90 degrees clockwise.
     //  C: Move forward until center line is detected.
     //  D: Apply placePipeDown(-1)(1).
-    //  E: Rotate 90 degrees anticlockwise.
+    //  E: Move forward until blackline AND wall is detected.
+    //  F: Rotate 90 degrees anticlockwise.
     //Step 9: Get 4th pipe on left side.
     //  A: Move backward.
     //  B: At 4th detection of backline apply pipePickUp(-1).
