@@ -51,7 +51,7 @@ task main()
     };
     stop();
     //  B: Rotate 90 degrees clockwise.
-    turnRight(90);
+    turn(90);
     //  C: Move forward until blackline AND wall is detected.
     while (SensorValue[lineFinder] < threshold && SensorValue[sonarFront] > 14)
     {
@@ -61,7 +61,7 @@ task main()
     //  D: Apply placeDownPipe(-1)(N).
     pipePlaceDown(-1, N);
     //  E: Rotate 90 degrees anticlockwise.
-    turnLeft(90);
+    turn(-90);
     //Step 4: Get Nth pipe on right side.
     //  A: Move backward.
     backward(30);
@@ -84,7 +84,7 @@ task main()
     }
     stop();
     //  B: Rotate 90 degrees anticlockwise.
-    turnLeft(90);
+    turn(-90);
     //  C: Move forward until black line AND wall is detected.
     forward(30);
     while (SensorValue[lineFinder] < threshold && SensorValue[sonarFront] > 14)
@@ -94,7 +94,7 @@ task main()
     //  D: Apply placePipeDown(1,N).
     placePipeDown(1, N);
     //  E: Rotate 90 degrees clockwise.
-    turnRight(90);
+    turn(90);
     //Step 6: Repeat Steps 2-5 2 more times. (N++)
   }
   //Step 7: Get 4th pipe on left side.
@@ -119,7 +119,7 @@ task main()
   };
   stop();
   //  B: Rotate 90 degrees clockwise.
-  turnRight(90);
+  turn(90);
   //  C: Move forward until center line is detected.
   //FL
   forward(30);
@@ -132,7 +132,7 @@ task main()
   }
   stop();
   //  F: Rotate 90 degrees anticlockwise.
-  turnLeft(90);
+  turn(-90);
   //Step 9: Get 4th pipe on left side.
   //  A: Move backward.
   backward(30);
@@ -155,20 +155,20 @@ task main()
   };
   stop();
   //  B: Rotate 90 degrees anticlockwise.
-  turnLeft(90);
+  turn(-90);
   //  C: Move forward until center line is detected.
   //FL
   forward();
   //  D: Apply placePipeDown(-1)(2).
   placePipeDown(-1, 2);
   //  E: Rotate 90 degrees anticlockwise.
-  turnLeft(90);
+  turn(-90);
   //Step 11:
   //  A: Move forward until ultrasonic sensor detects pipe.
   //  B: Close claw now holding the pipe.
   //  C: Go backwards for a bit.
   //  D: Rotate 180 degrees.
-  turnLeft(180);
+  turn(-180);
   //  E: Move forward until ultrasonic sensor detects MIDDLE train cart.
   forward(30);
   while (SensorValue[sonarFront] < 5)
@@ -180,11 +180,32 @@ task main()
 };
 
 //Function to pick up a pipe from anyside of the robot. 1 for rightside. -1 for leftside. 0 for front and 2 or -2 for backside. This code will also return the robot to its position before the function was applied.
-void pipePickUp(int x)
+void pipePickUp(int direction) //direction is for where the pipe/train cart is relative to the robot. -2 = behind the robot. -1 = left of the robot. 0 = front of the robot. 1 = right of the robot.
 {
-  //will need to be coded.
+  //A: Move forward until robot's center of rotation is inline with the pipe.
+  forward(15,1); //ADJUST
+  //B: Turn 90*direction degrees clockwise.
+  turn(90*direction);
+  //C: Move forward until ultrasonic sensor detects pipe. Save time taken.
+  ClearTimer[T1];
+  while(SensorValue[sonarFront] > 4)
+  {
+    forward(20);
+  }
+  int timeTaken = time1[T1];
+  stop();
+  //D: Close claw nowholding the pipe.
+  setClawState('c');
+  //E: Move backward for time taken.
+  backward(20,timeTaken);
+  //F: Turn 90*direction degrees counterclockwise.
+  turn(-90*direction);
 }
 
-void pipePlaceDown(int x, int y)
+void pipePlaceDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
+//Notes:
+//- -27 degrees for 1 and 2. -17 degrees for 3.
+//- may be better to let go by turning instead of backing away for 3.
 {
+
 }

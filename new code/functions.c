@@ -40,16 +40,8 @@ void backward(int speed) { // just move backward
 	motor[rightMotor] = -speed;
 }
 
-void turnLeft(int angle) {
-  int turnSpeed = 32;
-  motor[leftMotor] = -turnSpeed;
-	motor[rightMotor] = turnSpeed;
-	wait1Msec(angle * 12);
-	stop();
-}
-
-void turnRight(int angle) {
-  int turnSpeed = 32;
+void turn(int angle) {
+  int turnSpeed = 32 * (angle / abs(angle));
   motor[leftMotor] = turnSpeed;
   motor[rightMotor] = -turnSpeed;
   wait1Msec(angle * 12);
@@ -64,7 +56,6 @@ void moveArm(int angle) { // angle is in degrees, clockwise if you look at the r
 
 void turnClaw(int angle) { // angle is in degrees, clockwise from the robot's perspective
   motor[wristServo] = angle / 180 * 127;
-  wait1Msec(angle * 50); // CHANGE THIS 50 LATER TO REFLECT THE ACTUAL TIME NEEDED TO ROTATE THE ARM
 }
 
 void setClawState(char state) { // opens/closes the claw
@@ -73,4 +64,11 @@ void setClawState(char state) { // opens/closes the claw
   } else if(state == 'c') {
     motor[clawServo] = -127;
   }
+}
+
+int abs(int number) {
+	if(number > 0) {
+		return number;
+	}
+	return -number;
 }
