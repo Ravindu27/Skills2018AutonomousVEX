@@ -53,20 +53,20 @@ task main()
     //  B: Rotate 90 degrees clockwise.
     turnRight(90);
     //  C: Move forward until blackline AND wall is detected.
-    forward(30);
     while (SensorValue[lineFinder] < threshold && SensorValue[sonarFront] > 14)
     {
+      forward(30);
     }
     stop();
     //  D: Apply placeDownPipe(-1)(N).
-    pipePlaceDown(-1, N)
-        //  E: Rotate 90 degrees anticlockwise.
-        turnLeft(90);
+    pipePlaceDown(-1, N);
+    //  E: Rotate 90 degrees anticlockwise.
+    turnLeft(90);
     //Step 4: Get Nth pipe on right side.
     //  A: Move backward.
-    backward(30)
-        //  B: At Nth detection of blackline apply pipePickUp(-1)
-        while (counter < N)
+    backward(30);
+    //  B: At Nth detection of blackline apply pipePickUp(-1)
+    while (counter < N)
     {
       if (SensorValue[lineFinder] > threshold)
       {
@@ -113,9 +113,9 @@ task main()
   pipePickUp(1);
   //Step 8: Place left 4th pipe on MIDDLE train cart.
   //  A: Move forward until ultrasonic sensor detects train cart.
-  forward(30);
   while (SensorValue[sonarFront] < 5)
   {
+    forward(30);
   };
   stop();
   //  B: Rotate 90 degrees clockwise.
