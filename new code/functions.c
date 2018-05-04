@@ -61,9 +61,11 @@ void turnClaw(int angle) { // angle is in degrees, clockwise from the robot's pe
 
 void setClawState(char state) { // opens/closes the claw
   if(state == 'o') {
-    motor[clawServo] = 127;
+    motor[clawMotor] = 32;
+    wait1Msec(500);
   } else if(state == 'c') {
-    motor[clawServo] = -127;
+    motor[clawMotor] = -32;
+    wait1Msec(500);
   }
 }
 
