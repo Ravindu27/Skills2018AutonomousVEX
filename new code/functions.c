@@ -4,6 +4,14 @@
   e.g. If you want to move forward at speed 5 for 5 seconds, call forward(5,5).
   And If you want to just start moving forward at speed 5, call forward(5).
 */
+
+int abs(int number) {
+  if(number > 0) {
+    return number;
+  }
+  return -number;
+}
+
 void stop(int time) { // stop for some time
 	motor[leftMotor] = 0;
 	motor[rightMotor] = 0;
@@ -66,9 +74,63 @@ void setClawState(char state) { // opens/closes the claw
   }
 }
 
-int abs(int number) {
-	if(number > 0) {
-		return number;
-	}
-	return -number;
+
+//Function to pick up a pipe from anyside of the robot. 1 for rightside. -1 for leftside. 0 for front and 2 or -2 for backside. This code will also return the robot to its position before the function was applied.
+void pipePickUp(int direction) //direction is for where the pipe/train cart is relative to the robot. -2 = behind the robot. -1 = left of the robot. 0 = front of the robot. 1 = right of the robot.
+{
+  //A: Move forward until robot's center of rotation is inline with the pipe.
+  forward(15,1000); //ADJUST
+  //B: Turn 90*direction degrees clockwise.
+  turn(90*direction);
+  //C: Move forward until ultrasonic sensor detects pipe. Save time taken.
+  ClearTimer(T1);
+  while(SensorValue[sonarFront] > 3)
+  {
+    forward(20);
+  }
+  int timeTaken = time1[T1];
+  stop();
+  //D: Close claw nowholding the pipe.
+  setClawState('c');
+  //E: Move backward for time taken.
+  backward(20,timeTaken);
+  //F: Turn 90*direction degrees counterclockwise.
+  turn(-90*direction);
+}
+
+void pipePlaceDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
+//Notes:
+//- -27 degrees for 1 and 2. -17 degrees for 3.
+//- may be better to let go by turning instead of backing away for 3.
+{
+  backward(30*direction, 1000); //Adjust time.
+  turn(90*direction);
+  int angle = 0;
+  int length = 0;
+  switch(position)
+  {
+    case 1:
+    angle = -27;
+    length = 2500; //Adjust
+    break;
+
+    case 2:
+    angle = -27;
+    length = 2000; //Adjust
+    break;
+
+    case 3:
+    angle = -17;
+    length = 2250;
+    break;
+  }
+  turnClaw(-90);
+  forward(15,length);
+  moveArm(angle);
+  setClawState('o');
+  backward(15, length);
+  moveArm(angle);
+  turn(-90*direction);
+  forward(30*direction, 1000); //Adjust time.
+  turnClaw(90);
 }
