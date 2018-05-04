@@ -20,6 +20,8 @@ task main()
   //SETUP
   stop();
 
+  while(SensorValue[sonarFront] > 1) {} // wait until something is < 1" away
+
   int threshold = 3000; // change this later based on actual black lines
 
   int counter = 0; //for counting black lines.
