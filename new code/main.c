@@ -37,7 +37,7 @@ task main()
     {
       if (SensorValue[lineFinder] > threshold)
       {
-        counter++
+        counter++;
       }
     }
     counter = 0;
@@ -59,7 +59,7 @@ task main()
     }
     stop();
     //  D: Apply placeDownPipe(-1)(N).
-    pipePlaceDown(-1, N);
+    placePipeDown(-1, N);
     //  E: Rotate 90 degrees anticlockwise.
     turn(-90);
     //Step 4: Get Nth pipe on right side.
@@ -70,7 +70,7 @@ task main()
     {
       if (SensorValue[lineFinder] > threshold)
       {
-        counter++
+        counter++;
       }
     }
     counter = 0;
@@ -105,7 +105,7 @@ task main()
   {
     if (SensorValue[lineFinder] > threshold)
     {
-      counter++
+      counter++;
     }
   }
   counter = 0;
@@ -123,8 +123,8 @@ task main()
   //  C: Move forward until center line is detected.
   //FL
   forward(30);
-  sleep(1000);
-  while (SensorValue[lineFinder] > threshhold)
+  wait1Msec(1000);
+  while (SensorValue[lineFinder] > threshold)
   {
   }
   stop();
@@ -146,7 +146,7 @@ task main()
   {
     if (SensorValue[lineFinder] > threshold)
     {
-      counter++
+      counter++;
     }
   }
   counter = 0;
@@ -164,8 +164,8 @@ task main()
   //  C: Move forward until center line is detected.
   //FL
   forward(30);
-  sleep(1000);
-  while (SensorValue[lineFinder] > threshhold)
+  wait1Msec(1000);
+  while (SensorValue[lineFinder] > threshold)
   {
   }
   stop();
@@ -179,11 +179,11 @@ task main()
   while (SensorValue[sonarFront] > 3)
   {
   }
-  stop()
-      //  B: Close claw now holding the pipe.
-      setClawState('c')
-      //  C: Go backwards for a bit.
-      backward(30, 1000);
+  stop();
+  //  B: Close claw now holding the pipe.
+  setClawState('c');
+  //  C: Go backwards for a bit.
+  backward(30, 1000);
   //  D: Rotate 180 degrees.
   turn(-180);
   //  E: Move forward until ultrasonic sensor detects MIDDLE train cart.
@@ -204,7 +204,7 @@ void pipePickUp(int direction) //direction is for where the pipe/train cart is r
   //B: Turn 90*direction degrees clockwise.
   turn(90 * direction);
   //C: Move forward until ultrasonic sensor detects pipe. Save time taken.
-  ClearTimer[T1];
+  ClearTimer(T1);
   while (SensorValue[sonarFront] > 3)
   {
     forward(20);
@@ -219,7 +219,7 @@ void pipePickUp(int direction) //direction is for where the pipe/train cart is r
   turn(-90 * direction);
 }
 
-void pipePlaceDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
+void placePipeDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
 //Notes:
 //- -27 degrees for 1 and 2. -17 degrees for 3.
 //- may be better to let go by turning instead of backing away for 3.
@@ -230,17 +230,17 @@ void pipePlaceDown(int direction, int position) //1 = back of train cart. 2 = fr
   int length = 0;
   switch (position)
   {
-  case 1:
+    case 1:
     angle = -27;
     length = 2500; //Adjust
     break;
 
-  case 2:
+    case 2:
     angle = -27;
     length = 2000; //Adjust
     break;
 
-  case 3:
+    case 3:
     angle = -17;
     length = 2250;
     break;

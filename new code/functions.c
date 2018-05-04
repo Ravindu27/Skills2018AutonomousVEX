@@ -5,13 +5,6 @@
   And If you want to just start moving forward at speed 5, call forward(5).
 */
 
-int abs(int number) {
-  if(number > 0) {
-    return number;
-  }
-  return -number;
-}
-
 void stop(int time) { // stop for some time
 	motor[leftMotor] = 0;
 	motor[rightMotor] = 0;
@@ -98,7 +91,7 @@ void pipePickUp(int direction) //direction is for where the pipe/train cart is r
   turn(-90*direction);
 }
 
-void pipePlaceDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
+void placePipeDown(int direction, int position) //1 = back of train cart. 2 = front of train cart. 3 = top of train cart.
 //Notes:
 //- -27 degrees for 1 and 2. -17 degrees for 3.
 //- may be better to let go by turning instead of backing away for 3.
