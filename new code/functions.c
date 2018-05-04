@@ -45,18 +45,18 @@ void turn(int angle) {
   int turnSpeed = 32 * (angle / abs(angle));
   motor[leftMotor] = turnSpeed;
   motor[rightMotor] = -turnSpeed;
-  wait1Msec(angle * 12);
+  wait1Msec((int) (abs(angle) * 12.0));
   stop();
 }
 
 void moveArm(int angle) { // angle is in degrees, clockwise if you look at the robot from its left side
-	motor[armMotor] = 32;
-	wait1Msec((int) (angle * (float) (2500 / 45)));
+	motor[armMotor] = 32 * angle / abs(angle);
+	wait1Msec((int) (abs(angle) * (float) (2500 / 45)));
 	stop();
 }
 
 void turnClaw(int angle) { // angle is in degrees, clockwise from the robot's perspective
-  motor[wristServo] = angle / 180 * 127;
+  motor[wristServo] = (int) (angle / 180 * 127);
 }
 
 void setClawState(char state) { // opens/closes the claw
