@@ -230,17 +230,17 @@ void placePipeDown(int direction, int position) //1 = back of train cart. 2 = fr
   int length = 0;
   switch (position)
   {
-    case 1:
+  case 1:
     angle = -27;
     length = 2500; //Adjust
     break;
 
-    case 2:
+  case 2:
     angle = -27;
     length = 2000; //Adjust
     break;
 
-    case 3:
+  case 3:
     angle = -17;
     length = 2250;
     break;

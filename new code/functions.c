@@ -67,7 +67,6 @@ void setClawState(char state) { // opens/closes the claw
   }
 }
 
-
 //Function to pick up a pipe from anyside of the robot. 1 for rightside. -1 for leftside. 0 for front and 2 or -2 for backside. This code will also return the robot to its position before the function was applied.
 void pipePickUp(int direction) //direction is for where the pipe/train cart is relative to the robot. -2 = behind the robot. -1 = left of the robot. 0 = front of the robot. 1 = right of the robot.
 {
